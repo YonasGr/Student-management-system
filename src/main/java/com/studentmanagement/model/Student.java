@@ -20,6 +20,22 @@ public class Student {
      * Constructor for creating a new student
      */
     public Student(String studentId, String firstName, String lastName, String email, int age) {
+        if (studentId == null || studentId.trim().isEmpty()) {
+            throw new IllegalArgumentException("Student ID cannot be null or empty");
+        }
+        if (firstName == null || firstName.trim().isEmpty()) {
+            throw new IllegalArgumentException("First name cannot be null or empty");
+        }
+        if (lastName == null || lastName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Last name cannot be null or empty");
+        }
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+        if (age <= 0 || age >= 150) {
+            throw new IllegalArgumentException("Age must be between 1 and 149");
+        }
+        
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;

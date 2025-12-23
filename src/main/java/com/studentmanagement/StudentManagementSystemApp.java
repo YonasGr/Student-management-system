@@ -11,6 +11,8 @@ import java.util.Scanner;
  * Provides console-based interface with admin login and menu system
  */
 public class StudentManagementSystemApp {
+    // Note: For production use, credentials should be stored securely (environment variables, 
+    // configuration files, or external authentication service). Hardcoded for educational demonstration only.
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin123";
     private static final int MAX_LOGIN_ATTEMPTS = 3;
@@ -523,8 +525,10 @@ public class StudentManagementSystemApp {
             String courseCode = scanner.nextLine().trim().toUpperCase();
             
             studentManager.removeCourse(studentId, courseCode);
+            // Retrieve updated student to ensure GPA is recalculated
+            Student updatedStudent = studentManager.getStudent(studentId);
             System.out.println("\n✓ Course removed successfully!");
-            System.out.println("  Updated GPA: " + String.format("%.2f", student.getGpa()));
+            System.out.println("  Updated GPA: " + String.format("%.2f", updatedStudent.getGpa()));
             
         } catch (IllegalArgumentException e) {
             System.out.println("✗ " + e.getMessage());
