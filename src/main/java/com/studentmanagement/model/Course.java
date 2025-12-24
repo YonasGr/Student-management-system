@@ -1,9 +1,12 @@
 package com.studentmanagement.model;
 
+import java.io.Serializable;
+
 /**
  * Course class representing a course with grade information
  */
-public class Course {
+public class Course implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String courseCode;
     private String courseName;
     private int credits;

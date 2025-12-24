@@ -80,7 +80,9 @@ Student-management-system/
 │                   ├── service/
 │                   │   └── StudentManager.java            # CRUD operations service
 │                   └── util/
-│                       └── InputValidator.java            # Input validation utility
+│                       ├── InputValidator.java            # Input validation utility
+│                       ├── DataStore.java                 # File-based persistence (save/load)
+│                       └── SessionLogger.java             # Per-session action logging
 ├── docs/
 │   ├── 01-Requirements-Specification.md                   # SRS document
 │   ├── 02-System-Design-Document.md                       # Design specifications
@@ -353,15 +355,15 @@ Run manual tests following the test plan in `docs/03-Test-Plan.md`.
 
 ## 🚧 Known Limitations
 
-- **Data Persistence**: Data is stored in memory only (not saved between sessions)
+- **File-based Persistence Implemented**: Data is now saved between sessions using Java serialization (`data/students.dat`).
+- **Session Logs**: Each admin session is logged to `data/sessions/` with actions and timestamps.
 - **Single User**: Designed for one administrator at a time
-- **No Database**: Uses in-memory HashMap storage
+- **No Database**: Uses file storage instead of a RDBMS
 - **Plain Text Password**: For educational purposes only
 
 ## 🔮 Future Enhancements
 
 - [ ] Database integration (MySQL/PostgreSQL)
-- [ ] Data persistence (save/load functionality)
 - [ ] Multi-user support with different roles
 - [ ] Web-based interface
 - [ ] Report generation (PDF/Excel)

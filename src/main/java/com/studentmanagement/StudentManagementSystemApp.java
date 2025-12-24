@@ -3,6 +3,8 @@ package com.studentmanagement;
 import com.studentmanagement.model.Student;
 import com.studentmanagement.service.StudentManager;
 import com.studentmanagement.util.InputValidator;
+import com.studentmanagement.util.DataStore;
+import com.studentmanagement.util.SessionLogger;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,10 +21,12 @@ public class StudentManagementSystemApp {
     
     private StudentManager studentManager;
     private Scanner scanner;
+    private SessionLogger sessionLogger;
 
     public StudentManagementSystemApp() {
-        this.studentManager = new StudentManager();
+        this.studentManager = DataStore.load();
         this.scanner = new Scanner(System.in);
+        this.sessionLogger = null;
     }
 
     /**
@@ -45,7 +49,14 @@ public class StudentManagementSystemApp {
         } else {
             System.out.println("\n✗ Login failed. Maximum attempts reached. Exiting...");
         }
-        
+        try {
+            DataStore.save(studentManager);
+        } catch (Exception e) {
+            System.out.println("✗ Error saving data: " + e.getMessage());
+        }
+        if (sessionLogger != null) {
+            sessionLogger.close();
+        }
         scanner.close();
     }
 
@@ -74,6 +85,12 @@ public class StudentManagementSystemApp {
                 String password = scanner.nextLine().trim();
                 
                 if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
+                    try {
+                        this.sessionLogger = new SessionLogger(username);
+                        sessionLogger.logAction("LOGIN_SUCCESS", "username=" + username);
+                    } catch (Exception e) {
+                        System.out.println("✗ Warning: Session logging disabled: " + e.getMessage());
+                    }
                     return true;
                 }
                 
@@ -214,6 +231,10 @@ public class StudentManagementSystemApp {
             String studentId = studentManager.createStudent(firstName, lastName, email, age);
             System.out.println("\n✓ Student created successfully!");
             System.out.println("  Student ID: " + studentId);
+            if (sessionLogger != null) {
+                sessionLogger.logAction("CREATE_STUDENT", "id=" + studentId + ", email=" + email);
+            }
+            try { DataStore.save(studentManager); } catch (Exception ignored) {}
             
         } catch (Exception e) {
             System.out.println("✗ Error creating student: " + e.getMessage());
@@ -349,6 +370,10 @@ public class StudentManagementSystemApp {
             
             studentManager.updateStudent(studentId, field, value);
             System.out.println("\n✓ Student information updated successfully!");
+            if (sessionLogger != null) {
+                sessionLogger.logAction("UPDATE_STUDENT", "id=" + studentId + ", field=" + field);
+            }
+            try { DataStore.save(studentManager); } catch (Exception ignored) {}
             
         } catch (IllegalArgumentException e) {
             System.out.println("✗ " + e.getMessage());
@@ -378,6 +403,10 @@ public class StudentManagementSystemApp {
             if (confirmation.equals("yes") || confirmation.equals("y")) {
                 if (studentManager.deleteStudent(studentId)) {
                     System.out.println("✓ Student deleted successfully!");
+                    if (sessionLogger != null) {
+                        sessionLogger.logAction("DELETE_STUDENT", "id=" + studentId);
+                    }
+                    try { DataStore.save(studentManager); } catch (Exception ignored) {}
                 } else {
                     System.out.println("✗ Failed to delete student.");
                 }
@@ -489,6 +518,10 @@ public class StudentManagementSystemApp {
             studentManager.assignCourse(studentId, courseCode, courseName, credits, grade);
             System.out.println("\n✓ Course assigned successfully!");
             System.out.println("  Updated GPA: " + String.format("%.2f", student.getGpa()));
+            if (sessionLogger != null) {
+                sessionLogger.logAction("ASSIGN_COURSE", "id=" + studentId + ", course=" + courseCode);
+            }
+            try { DataStore.save(studentManager); } catch (Exception ignored) {}
             
         } catch (IllegalArgumentException e) {
             System.out.println("✗ " + e.getMessage());
@@ -529,6 +562,10 @@ public class StudentManagementSystemApp {
             Student updatedStudent = studentManager.getStudent(studentId);
             System.out.println("\n✓ Course removed successfully!");
             System.out.println("  Updated GPA: " + String.format("%.2f", updatedStudent.getGpa()));
+            if (sessionLogger != null) {
+                sessionLogger.logAction("REMOVE_COURSE", "id=" + studentId + ", course=" + courseCode);
+            }
+            try { DataStore.save(studentManager); } catch (Exception ignored) {}
             
         } catch (IllegalArgumentException e) {
             System.out.println("✗ " + e.getMessage());

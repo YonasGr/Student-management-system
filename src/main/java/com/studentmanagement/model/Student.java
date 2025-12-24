@@ -1,5 +1,6 @@
 package com.studentmanagement.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,8 @@ import java.util.List;
  * Encapsulated Student class representing a student entity
  * with private fields and public getters/setters
  */
-public class Student {
+public class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String studentId;
     private String firstName;
     private String lastName;

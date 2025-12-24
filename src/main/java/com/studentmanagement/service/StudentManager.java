@@ -2,6 +2,7 @@ package com.studentmanagement.service;
 
 import com.studentmanagement.model.Course;
 import com.studentmanagement.model.Student;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.stream.Collectors;
 /**
  * StudentManager class handling CRUD operations for students
  */
-public class StudentManager {
+public class StudentManager implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Map<String, Student> students;
     private int nextId;
 
