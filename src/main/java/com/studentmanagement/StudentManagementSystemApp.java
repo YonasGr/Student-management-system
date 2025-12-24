@@ -5,6 +5,7 @@ import com.studentmanagement.service.StudentManager;
 import com.studentmanagement.util.InputValidator;
 import com.studentmanagement.util.DataStore;
 import com.studentmanagement.util.SessionLogger;
+import com.studentmanagement.util.ConsoleColors;
 import java.util.List;
 import java.util.Scanner;
 
@@ -44,15 +45,15 @@ public class StudentManagementSystemApp {
         printWelcomeBanner();
         
         if (performLogin()) {
-            System.out.println("\n✓ Login successful! Welcome to Student Management System.\n");
+            System.out.println(ConsoleColors.colorize("\n✓ Login successful! Welcome to Student Management System.\n", ConsoleColors.GREEN_BOLD));
             showMainMenu();
         } else {
-            System.out.println("\n✗ Login failed. Maximum attempts reached. Exiting...");
+            System.out.println(ConsoleColors.colorize("\n✗ Login failed. Maximum attempts reached. Exiting...", ConsoleColors.RED_BOLD));
         }
         try {
             DataStore.save(studentManager);
         } catch (Exception e) {
-            System.out.println("✗ Error saving data: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error saving data: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
         if (sessionLogger != null) {
             sessionLogger.close();
@@ -64,24 +65,24 @@ public class StudentManagementSystemApp {
      * Print welcome banner
      */
     private void printWelcomeBanner() {
-        System.out.println("╔═══════════════════════════════════════════════════════════╗");
-        System.out.println("║        STUDENT MANAGEMENT SYSTEM - OOP PROJECT           ║");
-        System.out.println("║              Console-Based Application                    ║");
-        System.out.println("╚═══════════════════════════════════════════════════════════╝");
+        System.out.println(ConsoleColors.colorize("╔═══════════════════════════════════════════════════════════╗", ConsoleColors.BRIGHT_BLUE, ConsoleColors.BOLD));
+        System.out.println(ConsoleColors.colorize("║        STUDENT MANAGEMENT SYSTEM - OOP PROJECT           ║", ConsoleColors.BRIGHT_WHITE_BOLD));
+        System.out.println(ConsoleColors.colorize("║              Console-Based Application                    ║", ConsoleColors.BRIGHT_WHITE_BOLD));
+        System.out.println(ConsoleColors.colorize("╚═══════════════════════════════════════════════════════════╝", ConsoleColors.BRIGHT_BLUE, ConsoleColors.BOLD));
     }
 
     /**
      * Perform admin login with validation
      */
     private boolean performLogin() {
-        System.out.println("\n--- ADMIN LOGIN ---");
+        System.out.println(ConsoleColors.colorize("\n--- ADMIN LOGIN ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         for (int attempt = 1; attempt <= MAX_LOGIN_ATTEMPTS; attempt++) {
             try {
-                System.out.print("Username: ");
+                printPrompt("Username: ");
                 String username = scanner.nextLine().trim();
                 
-                System.out.print("Password: ");
+                printPrompt("Password: ");
                 String password = scanner.nextLine().trim();
                 
                 if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
@@ -89,15 +90,15 @@ public class StudentManagementSystemApp {
                         this.sessionLogger = new SessionLogger(username);
                         sessionLogger.logAction("LOGIN_SUCCESS", "username=" + username);
                     } catch (Exception e) {
-                        System.out.println("✗ Warning: Session logging disabled: " + e.getMessage());
+                        System.out.println(ConsoleColors.colorize("✗ Warning: Session logging disabled: " + e.getMessage(), ConsoleColors.YELLOW_BOLD));
                     }
                     return true;
                 }
                 
-                System.out.println("✗ Invalid credentials. Attempt " + attempt + " of " + MAX_LOGIN_ATTEMPTS);
+                System.out.println(ConsoleColors.colorize("✗ Invalid credentials. Attempt " + attempt + " of " + MAX_LOGIN_ATTEMPTS, ConsoleColors.RED_BOLD));
                 
             } catch (Exception e) {
-                System.out.println("✗ Error during login: " + e.getMessage());
+                System.out.println(ConsoleColors.colorize("✗ Error during login: " + e.getMessage(), ConsoleColors.RED_BOLD));
             }
         }
         
@@ -144,15 +145,15 @@ public class StudentManagementSystemApp {
                         viewStatistics();
                         break;
                     case 0:
-                        System.out.println("\nThank you for using Student Management System. Goodbye!");
+                        System.out.println(ConsoleColors.colorize("\nThank you for using Student Management System. Goodbye!", ConsoleColors.GREEN_BOLD));
                         running = false;
                         break;
                     default:
-                        System.out.println("✗ Invalid choice. Please try again.");
+                        System.out.println(ConsoleColors.colorize("✗ Invalid choice. Please try again.", ConsoleColors.RED_BOLD));
                 }
                 
             } catch (Exception e) {
-                System.out.println("✗ Error: " + e.getMessage());
+                System.out.println(ConsoleColors.colorize("✗ Error: " + e.getMessage(), ConsoleColors.RED_BOLD));
             }
             
             if (running) {
@@ -165,56 +166,56 @@ public class StudentManagementSystemApp {
      * Print main menu
      */
     private void printMainMenu() {
-        System.out.println("\n╔═══════════════════════════════════════════════════════════╗");
-        System.out.println("║                     MAIN MENU                            ║");
-        System.out.println("╠═══════════════════════════════════════════════════════════╣");
-        System.out.println("║  1. Create New Student                                   ║");
-        System.out.println("║  2. View All Students                                    ║");
-        System.out.println("║  3. View Student Details                                 ║");
-        System.out.println("║  4. Update Student Information                           ║");
-        System.out.println("║  5. Delete Student                                       ║");
-        System.out.println("║  6. Search Students                                      ║");
-        System.out.println("║  7. Assign Course to Student                             ║");
-        System.out.println("║  8. Remove Course from Student                           ║");
-        System.out.println("║  9. View Statistics                                      ║");
-        System.out.println("║  0. Exit                                                 ║");
-        System.out.println("╚═══════════════════════════════════════════════════════════╝");
+        System.out.println(ConsoleColors.colorize("\n╔═══════════════════════════════════════════════════════════╗", ConsoleColors.BRIGHT_BLUE, ConsoleColors.BOLD));
+        System.out.println(ConsoleColors.colorize("║                     MAIN MENU                            ║", ConsoleColors.BRIGHT_WHITE_BOLD));
+        System.out.println(ConsoleColors.colorize("╠═══════════════════════════════════════════════════════════╣", ConsoleColors.BRIGHT_BLUE, ConsoleColors.BOLD));
+        System.out.println(ConsoleColors.colorize("║  1. Create New Student                                   ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("║  2. View All Students                                    ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("║  3. View Student Details                                 ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("║  4. Update Student Information                           ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("║  5. Delete Student                                       ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("║  6. Search Students                                      ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("║  7. Assign Course to Student                             ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("║  8. Remove Course from Student                           ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("║  9. View Statistics                                      ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("║  0. Exit                                                 ║", ConsoleColors.BRIGHT_GREEN));
+        System.out.println(ConsoleColors.colorize("╚═══════════════════════════════════════════════════════════╝", ConsoleColors.BRIGHT_BLUE, ConsoleColors.BOLD));
     }
 
     /**
      * Create a new student with input validation
      */
     private void createStudent() {
-        System.out.println("\n--- CREATE NEW STUDENT ---");
+        System.out.println(ConsoleColors.colorize("\n--- CREATE NEW STUDENT ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         try {
             // Get first name
             String firstName;
             do {
-                System.out.print("First Name: ");
+                printPrompt("First Name: ");
                 firstName = scanner.nextLine().trim();
                 if (!InputValidator.isValidName(firstName)) {
-                    System.out.println("✗ Invalid name. Use only letters and spaces.");
+                    System.out.println(ConsoleColors.colorize("✗ Invalid name. Use only letters and spaces.", ConsoleColors.RED_BOLD));
                 }
             } while (!InputValidator.isValidName(firstName));
             
             // Get last name
             String lastName;
             do {
-                System.out.print("Last Name: ");
+                printPrompt("Last Name: ");
                 lastName = scanner.nextLine().trim();
                 if (!InputValidator.isValidName(lastName)) {
-                    System.out.println("✗ Invalid name. Use only letters and spaces.");
+                    System.out.println(ConsoleColors.colorize("✗ Invalid name. Use only letters and spaces.", ConsoleColors.RED_BOLD));
                 }
             } while (!InputValidator.isValidName(lastName));
             
             // Get email
             String email;
             do {
-                System.out.print("Email: ");
+                printPrompt("Email: ");
                 email = scanner.nextLine().trim();
                 if (!InputValidator.isValidEmail(email)) {
-                    System.out.println("✗ Invalid email format. Example: user@example.com");
+                    System.out.println(ConsoleColors.colorize("✗ Invalid email format. Example: user@example.com", ConsoleColors.RED_BOLD));
                 }
             } while (!InputValidator.isValidEmail(email));
             
@@ -223,21 +224,21 @@ public class StudentManagementSystemApp {
             do {
                 age = getIntInput("Age: ");
                 if (!InputValidator.isValidAge(age)) {
-                    System.out.println("✗ Invalid age. Must be between 1 and 149.");
+                    System.out.println(ConsoleColors.colorize("✗ Invalid age. Must be between 1 and 149.", ConsoleColors.RED_BOLD));
                 }
             } while (!InputValidator.isValidAge(age));
             
             // Create student
             String studentId = studentManager.createStudent(firstName, lastName, email, age);
-            System.out.println("\n✓ Student created successfully!");
-            System.out.println("  Student ID: " + studentId);
+            System.out.println(ConsoleColors.colorize("\n✓ Student created successfully!", ConsoleColors.GREEN_BOLD));
+            System.out.println(ConsoleColors.colorize("  Student ID: " + studentId, ConsoleColors.BRIGHT_WHITE_BOLD));
             if (sessionLogger != null) {
                 sessionLogger.logAction("CREATE_STUDENT", "id=" + studentId + ", email=" + email);
             }
             try { DataStore.save(studentManager); } catch (Exception ignored) {}
             
         } catch (Exception e) {
-            System.out.println("✗ Error creating student: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error creating student: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
     }
 
@@ -245,19 +246,19 @@ public class StudentManagementSystemApp {
      * View all students
      */
     private void viewAllStudents() {
-        System.out.println("\n--- ALL STUDENTS ---");
+        System.out.println(ConsoleColors.colorize("\n--- ALL STUDENTS ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         try {
             List<Student> students = studentManager.getAllStudents();
             
             if (students.isEmpty()) {
-                System.out.println("No students found in the system.");
+                System.out.println(ConsoleColors.colorize("No students found in the system.", ConsoleColors.YELLOW_BOLD));
             } else {
-                System.out.println("Total Students: " + students.size());
-                System.out.println("\n" + "=".repeat(100));
-                System.out.printf("%-12s %-20s %-30s %-5s %-8s%n", 
+                System.out.println(ConsoleColors.colorize("Total Students: " + students.size(), ConsoleColors.BRIGHT_WHITE_BOLD));
+                System.out.println(ConsoleColors.colorize("\n" + "=".repeat(100), ConsoleColors.BRIGHT_BLUE));
+                System.out.printf(ConsoleColors.colorize("%-12s %-20s %-30s %-5s %-8s%n", ConsoleColors.BRIGHT_WHITE_BOLD), 
                                 "ID", "Name", "Email", "Age", "GPA");
-                System.out.println("=".repeat(100));
+                System.out.println(ConsoleColors.colorize("=".repeat(100), ConsoleColors.BRIGHT_BLUE));
                 
                 for (Student student : students) {
                     System.out.printf("%-12s %-20s %-30s %-5d %.2f%n",
@@ -267,10 +268,10 @@ public class StudentManagementSystemApp {
                                     student.getAge(),
                                     student.getGpa());
                 }
-                System.out.println("=".repeat(100));
+                System.out.println(ConsoleColors.colorize("=".repeat(100), ConsoleColors.BRIGHT_BLUE));
             }
         } catch (Exception e) {
-            System.out.println("✗ Error retrieving students: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error retrieving students: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
     }
 
@@ -278,21 +279,21 @@ public class StudentManagementSystemApp {
      * View detailed information about a specific student
      */
     private void viewStudent() {
-        System.out.println("\n--- VIEW STUDENT DETAILS ---");
+        System.out.println(ConsoleColors.colorize("\n--- VIEW STUDENT DETAILS ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         try {
-            System.out.print("Enter Student ID: ");
+            printPrompt("Enter Student ID: ");
             String studentId = scanner.nextLine().trim().toUpperCase();
             
             Student student = studentManager.getStudent(studentId);
-            System.out.println("\n" + "=".repeat(60));
+            System.out.println(ConsoleColors.colorize("\n" + "=".repeat(60), ConsoleColors.BRIGHT_BLUE));
             System.out.println(student);
-            System.out.println("=".repeat(60));
+            System.out.println(ConsoleColors.colorize("=".repeat(60), ConsoleColors.BRIGHT_BLUE));
             
         } catch (IllegalArgumentException e) {
-            System.out.println("✗ " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ " + e.getMessage(), ConsoleColors.RED_BOLD));
         } catch (Exception e) {
-            System.out.println("✗ Error retrieving student: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error retrieving student: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
     }
 
@@ -300,10 +301,10 @@ public class StudentManagementSystemApp {
      * Update student information (selective fields)
      */
     private void updateStudent() {
-        System.out.println("\n--- UPDATE STUDENT INFORMATION ---");
+        System.out.println(ConsoleColors.colorize("\n--- UPDATE STUDENT INFORMATION ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         try {
-            System.out.print("Enter Student ID: ");
+            printPrompt("Enter Student ID: ");
             String studentId = scanner.nextLine().trim().toUpperCase();
             
             // Verify student exists
@@ -311,11 +312,11 @@ public class StudentManagementSystemApp {
             System.out.println("\nCurrent Information:");
             System.out.println(student);
             
-            System.out.println("\nSelect field to update:");
-            System.out.println("1. First Name");
-            System.out.println("2. Last Name");
-            System.out.println("3. Email");
-            System.out.println("4. Age");
+            System.out.println(ConsoleColors.colorize("\nSelect field to update:", ConsoleColors.BRIGHT_WHITE_BOLD));
+            System.out.println(ConsoleColors.colorize("1. First Name", ConsoleColors.BRIGHT_GREEN));
+            System.out.println(ConsoleColors.colorize("2. Last Name", ConsoleColors.BRIGHT_GREEN));
+            System.out.println(ConsoleColors.colorize("3. Email", ConsoleColors.BRIGHT_GREEN));
+            System.out.println(ConsoleColors.colorize("4. Age", ConsoleColors.BRIGHT_GREEN));
             
             int choice = getIntInput("Enter choice: ");
             String field = "";
@@ -325,30 +326,30 @@ public class StudentManagementSystemApp {
                 case 1:
                     field = "firstname";
                     do {
-                        System.out.print("New First Name: ");
+                        printPrompt("New First Name: ");
                         value = scanner.nextLine().trim();
                         if (!InputValidator.isValidName(value)) {
-                            System.out.println("✗ Invalid name. Use only letters and spaces.");
+                            System.out.println(ConsoleColors.colorize("✗ Invalid name. Use only letters and spaces.", ConsoleColors.RED_BOLD));
                         }
                     } while (!InputValidator.isValidName(value));
                     break;
                 case 2:
                     field = "lastname";
                     do {
-                        System.out.print("New Last Name: ");
+                        printPrompt("New Last Name: ");
                         value = scanner.nextLine().trim();
                         if (!InputValidator.isValidName(value)) {
-                            System.out.println("✗ Invalid name. Use only letters and spaces.");
+                            System.out.println(ConsoleColors.colorize("✗ Invalid name. Use only letters and spaces.", ConsoleColors.RED_BOLD));
                         }
                     } while (!InputValidator.isValidName(value));
                     break;
                 case 3:
                     field = "email";
                     do {
-                        System.out.print("New Email: ");
+                        printPrompt("New Email: ");
                         value = scanner.nextLine().trim();
                         if (!InputValidator.isValidEmail(value)) {
-                            System.out.println("✗ Invalid email format.");
+                            System.out.println(ConsoleColors.colorize("✗ Invalid email format.", ConsoleColors.RED_BOLD));
                         }
                     } while (!InputValidator.isValidEmail(value));
                     break;
@@ -358,27 +359,27 @@ public class StudentManagementSystemApp {
                     do {
                         age = getIntInput("New Age: ");
                         if (!InputValidator.isValidAge(age)) {
-                            System.out.println("✗ Invalid age. Must be between 1 and 149.");
+                            System.out.println(ConsoleColors.colorize("✗ Invalid age. Must be between 1 and 149.", ConsoleColors.RED_BOLD));
                         }
                     } while (!InputValidator.isValidAge(age));
                     value = String.valueOf(age);
                     break;
                 default:
-                    System.out.println("✗ Invalid choice.");
+                    System.out.println(ConsoleColors.colorize("✗ Invalid choice.", ConsoleColors.RED_BOLD));
                     return;
             }
             
             studentManager.updateStudent(studentId, field, value);
-            System.out.println("\n✓ Student information updated successfully!");
+            System.out.println(ConsoleColors.colorize("\n✓ Student information updated successfully!", ConsoleColors.GREEN_BOLD));
             if (sessionLogger != null) {
                 sessionLogger.logAction("UPDATE_STUDENT", "id=" + studentId + ", field=" + field);
             }
             try { DataStore.save(studentManager); } catch (Exception ignored) {}
             
         } catch (IllegalArgumentException e) {
-            System.out.println("✗ " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ " + e.getMessage(), ConsoleColors.RED_BOLD));
         } catch (Exception e) {
-            System.out.println("✗ Error updating student: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error updating student: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
     }
 
@@ -386,10 +387,10 @@ public class StudentManagementSystemApp {
      * Delete a student
      */
     private void deleteStudent() {
-        System.out.println("\n--- DELETE STUDENT ---");
+        System.out.println(ConsoleColors.colorize("\n--- DELETE STUDENT ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         try {
-            System.out.print("Enter Student ID: ");
+            printPrompt("Enter Student ID: ");
             String studentId = scanner.nextLine().trim().toUpperCase();
             
             // Show student details before deletion
@@ -397,27 +398,27 @@ public class StudentManagementSystemApp {
             System.out.println("\nStudent to be deleted:");
             System.out.println(student);
             
-            System.out.print("\nAre you sure you want to delete this student? (yes/no): ");
+            printPrompt("\nAre you sure you want to delete this student? (yes/no): ");
             String confirmation = scanner.nextLine().trim().toLowerCase();
             
             if (confirmation.equals("yes") || confirmation.equals("y")) {
                 if (studentManager.deleteStudent(studentId)) {
-                    System.out.println("✓ Student deleted successfully!");
+                    System.out.println(ConsoleColors.colorize("✓ Student deleted successfully!", ConsoleColors.GREEN_BOLD));
                     if (sessionLogger != null) {
                         sessionLogger.logAction("DELETE_STUDENT", "id=" + studentId);
                     }
                     try { DataStore.save(studentManager); } catch (Exception ignored) {}
                 } else {
-                    System.out.println("✗ Failed to delete student.");
+                    System.out.println(ConsoleColors.colorize("✗ Failed to delete student.", ConsoleColors.RED_BOLD));
                 }
             } else {
-                System.out.println("Deletion cancelled.");
+                System.out.println(ConsoleColors.colorize("Deletion cancelled.", ConsoleColors.YELLOW_BOLD));
             }
             
         } catch (IllegalArgumentException e) {
-            System.out.println("✗ " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ " + e.getMessage(), ConsoleColors.RED_BOLD));
         } catch (Exception e) {
-            System.out.println("✗ Error deleting student: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error deleting student: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
     }
 
@@ -425,27 +426,27 @@ public class StudentManagementSystemApp {
      * Search for students
      */
     private void searchStudents() {
-        System.out.println("\n--- SEARCH STUDENTS ---");
+        System.out.println(ConsoleColors.colorize("\n--- SEARCH STUDENTS ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         try {
-            System.out.print("Enter search term (ID, name, or email): ");
+            printPrompt("Enter search term (ID, name, or email): ");
             String searchTerm = scanner.nextLine().trim();
             
             if (!InputValidator.isNotEmpty(searchTerm)) {
-                System.out.println("✗ Search term cannot be empty.");
+                System.out.println(ConsoleColors.colorize("✗ Search term cannot be empty.", ConsoleColors.RED_BOLD));
                 return;
             }
             
             List<Student> results = studentManager.searchStudents(searchTerm);
             
             if (results.isEmpty()) {
-                System.out.println("No students found matching: " + searchTerm);
+                System.out.println(ConsoleColors.colorize("No students found matching: " + searchTerm, ConsoleColors.YELLOW_BOLD));
             } else {
-                System.out.println("\nFound " + results.size() + " student(s):");
-                System.out.println("\n" + "=".repeat(100));
-                System.out.printf("%-12s %-20s %-30s %-5s %-8s%n", 
+                System.out.println(ConsoleColors.colorize("\nFound " + results.size() + " student(s):", ConsoleColors.BRIGHT_WHITE_BOLD));
+                System.out.println(ConsoleColors.colorize("\n" + "=".repeat(100), ConsoleColors.BRIGHT_BLUE));
+                System.out.printf(ConsoleColors.colorize("%-12s %-20s %-30s %-5s %-8s%n", ConsoleColors.BRIGHT_WHITE_BOLD), 
                                 "ID", "Name", "Email", "Age", "GPA");
-                System.out.println("=".repeat(100));
+                System.out.println(ConsoleColors.colorize("=".repeat(100), ConsoleColors.BRIGHT_BLUE));
                 
                 for (Student student : results) {
                     System.out.printf("%-12s %-20s %-30s %-5d %.2f%n",
@@ -455,11 +456,11 @@ public class StudentManagementSystemApp {
                                     student.getAge(),
                                     student.getGpa());
                 }
-                System.out.println("=".repeat(100));
+                System.out.println(ConsoleColors.colorize("=".repeat(100), ConsoleColors.BRIGHT_BLUE));
             }
             
         } catch (Exception e) {
-            System.out.println("✗ Error searching students: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error searching students: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
     }
 
@@ -467,10 +468,10 @@ public class StudentManagementSystemApp {
      * Assign a course to a student
      */
     private void assignCourse() {
-        System.out.println("\n--- ASSIGN COURSE TO STUDENT ---");
+        System.out.println(ConsoleColors.colorize("\n--- ASSIGN COURSE TO STUDENT ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         try {
-            System.out.print("Enter Student ID: ");
+            printPrompt("Enter Student ID: ");
             String studentId = scanner.nextLine().trim().toUpperCase();
             
             // Verify student exists
@@ -480,20 +481,20 @@ public class StudentManagementSystemApp {
             // Get course code
             String courseCode;
             do {
-                System.out.print("Course Code (e.g., CS101, MATH201): ");
+                printPrompt("Course Code (e.g., CS101, MATH201): ");
                 courseCode = scanner.nextLine().trim().toUpperCase();
                 if (!InputValidator.isValidCourseCode(courseCode)) {
-                    System.out.println("✗ Invalid course code format. Use format like CS101 or MATH201.");
+                    System.out.println(ConsoleColors.colorize("✗ Invalid course code format. Use format like CS101 or MATH201.", ConsoleColors.RED_BOLD));
                 }
             } while (!InputValidator.isValidCourseCode(courseCode));
             
             // Get course name
             String courseName;
             do {
-                System.out.print("Course Name: ");
+                printPrompt("Course Name: ");
                 courseName = scanner.nextLine().trim();
                 if (!InputValidator.isNotEmpty(courseName)) {
-                    System.out.println("✗ Course name cannot be empty.");
+                    System.out.println(ConsoleColors.colorize("✗ Course name cannot be empty.", ConsoleColors.RED_BOLD));
                 }
             } while (!InputValidator.isNotEmpty(courseName));
             
@@ -502,7 +503,7 @@ public class StudentManagementSystemApp {
             do {
                 credits = getIntInput("Credits (1-10): ");
                 if (!InputValidator.isValidCredits(credits)) {
-                    System.out.println("✗ Invalid credits. Must be between 1 and 10.");
+                    System.out.println(ConsoleColors.colorize("✗ Invalid credits. Must be between 1 and 10.", ConsoleColors.RED_BOLD));
                 }
             } while (!InputValidator.isValidCredits(credits));
             
@@ -511,22 +512,22 @@ public class StudentManagementSystemApp {
             do {
                 grade = getDoubleInput("Grade (0-100): ");
                 if (!InputValidator.isValidGrade(grade)) {
-                    System.out.println("✗ Invalid grade. Must be between 0 and 100.");
+                    System.out.println(ConsoleColors.colorize("✗ Invalid grade. Must be between 0 and 100.", ConsoleColors.RED_BOLD));
                 }
             } while (!InputValidator.isValidGrade(grade));
             
             studentManager.assignCourse(studentId, courseCode, courseName, credits, grade);
-            System.out.println("\n✓ Course assigned successfully!");
-            System.out.println("  Updated GPA: " + String.format("%.2f", student.getGpa()));
+            System.out.println(ConsoleColors.colorize("\n✓ Course assigned successfully!", ConsoleColors.GREEN_BOLD));
+            System.out.println(ConsoleColors.colorize("  Updated GPA: " + String.format("%.2f", student.getGpa()), ConsoleColors.BRIGHT_WHITE_BOLD));
             if (sessionLogger != null) {
                 sessionLogger.logAction("ASSIGN_COURSE", "id=" + studentId + ", course=" + courseCode);
             }
             try { DataStore.save(studentManager); } catch (Exception ignored) {}
             
         } catch (IllegalArgumentException e) {
-            System.out.println("✗ " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ " + e.getMessage(), ConsoleColors.RED_BOLD));
         } catch (Exception e) {
-            System.out.println("✗ Error assigning course: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error assigning course: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
     }
 
@@ -534,10 +535,10 @@ public class StudentManagementSystemApp {
      * Remove a course from a student
      */
     private void removeCourse() {
-        System.out.println("\n--- REMOVE COURSE FROM STUDENT ---");
+        System.out.println(ConsoleColors.colorize("\n--- REMOVE COURSE FROM STUDENT ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         try {
-            System.out.print("Enter Student ID: ");
+            printPrompt("Enter Student ID: ");
             String studentId = scanner.nextLine().trim().toUpperCase();
             
             // Verify student exists and show courses
@@ -554,23 +555,23 @@ public class StudentManagementSystemApp {
                 System.out.println("  - " + course.getCourseCode() + ": " + course.getCourseName());
             }
             
-            System.out.print("\nEnter Course Code to remove: ");
+            printPrompt("\nEnter Course Code to remove: ");
             String courseCode = scanner.nextLine().trim().toUpperCase();
             
             studentManager.removeCourse(studentId, courseCode);
             // Retrieve updated student to ensure GPA is recalculated
             Student updatedStudent = studentManager.getStudent(studentId);
-            System.out.println("\n✓ Course removed successfully!");
-            System.out.println("  Updated GPA: " + String.format("%.2f", updatedStudent.getGpa()));
+            System.out.println(ConsoleColors.colorize("\n✓ Course removed successfully!", ConsoleColors.GREEN_BOLD));
+            System.out.println(ConsoleColors.colorize("  Updated GPA: " + String.format("%.2f", updatedStudent.getGpa()), ConsoleColors.BRIGHT_WHITE_BOLD));
             if (sessionLogger != null) {
                 sessionLogger.logAction("REMOVE_COURSE", "id=" + studentId + ", course=" + courseCode);
             }
             try { DataStore.save(studentManager); } catch (Exception ignored) {}
             
         } catch (IllegalArgumentException e) {
-            System.out.println("✗ " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ " + e.getMessage(), ConsoleColors.RED_BOLD));
         } catch (Exception e) {
-            System.out.println("✗ Error removing course: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error removing course: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
     }
 
@@ -578,13 +579,13 @@ public class StudentManagementSystemApp {
      * View system statistics
      */
     private void viewStatistics() {
-        System.out.println("\n--- SYSTEM STATISTICS ---");
+        System.out.println(ConsoleColors.colorize("\n--- SYSTEM STATISTICS ---", ConsoleColors.BRIGHT_CYAN, ConsoleColors.BOLD));
         
         try {
             List<Student> allStudents = studentManager.getAllStudents();
             
             if (allStudents.isEmpty()) {
-                System.out.println("No students in the system.");
+                System.out.println(ConsoleColors.colorize("No students in the system.", ConsoleColors.YELLOW_BOLD));
                 return;
             }
             
@@ -598,15 +599,15 @@ public class StudentManagementSystemApp {
                                                   .filter(s -> !s.getCourses().isEmpty())
                                                   .count();
             
-            System.out.println("\n" + "=".repeat(60));
-            System.out.println("Total Students: " + totalStudents);
-            System.out.println("Students with Courses: " + studentsWithCourses);
-            System.out.println("Average GPA: " + String.format("%.2f", averageGPA));
+            System.out.println(ConsoleColors.colorize("\n" + "=".repeat(60), ConsoleColors.BRIGHT_BLUE));
+            System.out.println(ConsoleColors.colorize("Total Students: " + totalStudents, ConsoleColors.BRIGHT_WHITE_BOLD));
+            System.out.println(ConsoleColors.colorize("Students with Courses: " + studentsWithCourses, ConsoleColors.BRIGHT_WHITE_BOLD));
+            System.out.println(ConsoleColors.colorize("Average GPA: " + String.format("%.2f", averageGPA), ConsoleColors.BRIGHT_WHITE_BOLD));
             
-            System.out.println("\nTop Students (GPA >= 3.0):");
+            System.out.println(ConsoleColors.colorize("\nTop Students (GPA >= 3.0):", ConsoleColors.BRIGHT_WHITE_BOLD));
             List<Student> topStudents = studentManager.getStudentsByMinGPA(3.0);
             if (topStudents.isEmpty()) {
-                System.out.println("  No students with GPA >= 3.0");
+                System.out.println(ConsoleColors.colorize("  No students with GPA >= 3.0", ConsoleColors.YELLOW_BOLD));
             } else {
                 for (Student student : topStudents) {
                     System.out.printf("  - %s %s (ID: %s, GPA: %.2f)%n",
@@ -616,10 +617,10 @@ public class StudentManagementSystemApp {
                                     student.getGpa());
                 }
             }
-            System.out.println("=".repeat(60));
+            System.out.println(ConsoleColors.colorize("=".repeat(60), ConsoleColors.BRIGHT_BLUE));
             
         } catch (Exception e) {
-            System.out.println("✗ Error retrieving statistics: " + e.getMessage());
+            System.out.println(ConsoleColors.colorize("✗ Error retrieving statistics: " + e.getMessage(), ConsoleColors.RED_BOLD));
         }
     }
 
@@ -629,11 +630,11 @@ public class StudentManagementSystemApp {
     private int getIntInput(String prompt) {
         while (true) {
             try {
-                System.out.print(prompt);
+                printPrompt(prompt);
                 String input = scanner.nextLine().trim();
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("✗ Invalid input. Please enter a valid number.");
+                System.out.println(ConsoleColors.colorize("✗ Invalid input. Please enter a valid number.", ConsoleColors.RED_BOLD));
             }
         }
     }
@@ -644,11 +645,11 @@ public class StudentManagementSystemApp {
     private double getDoubleInput(String prompt) {
         while (true) {
             try {
-                System.out.print(prompt);
+                printPrompt(prompt);
                 String input = scanner.nextLine().trim();
                 return Double.parseDouble(input);
             } catch (NumberFormatException e) {
-                System.out.println("✗ Invalid input. Please enter a valid number.");
+                System.out.println(ConsoleColors.colorize("✗ Invalid input. Please enter a valid number.", ConsoleColors.RED_BOLD));
             }
         }
     }
@@ -657,7 +658,11 @@ public class StudentManagementSystemApp {
      * Wait for user to press Enter
      */
     private void pressEnterToContinue() {
-        System.out.println("\nPress Enter to continue...");
+        System.out.println(ConsoleColors.colorize("\nPress Enter to continue...", ConsoleColors.YELLOW_BOLD));
         scanner.nextLine();
+    }
+
+    private void printPrompt(String prompt) {
+        System.out.print(ConsoleColors.colorize(prompt, ConsoleColors.CYAN_BOLD));
     }
 }
