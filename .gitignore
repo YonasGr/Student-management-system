@@ -35,3 +35,6 @@ out/
 *.tmp
 *.swp
 *~
+
+# Runtime data (do not commit persisted data or session logs)
+data/
